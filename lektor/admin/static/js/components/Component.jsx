@@ -3,13 +3,13 @@ import dialogSystem from '../dialogSystem'
 import BaseComponent from './BaseComponent'
 
 class Component extends BaseComponent {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this._unlistenBeforeLeavingRoute = null
   }
 
   /* helper function for forwarding props down the tree */
-  getRoutingProps () {
+  getRoutingProps() {
     return {
       history: this.props.history,
       location: this.props.location,
@@ -21,7 +21,7 @@ class Component extends BaseComponent {
   }
 
   /* helper that can generate a path to a rule */
-  getPathToAdminPage (name, params) {
+  getPathToAdminPage(name, params) {
     let parts = this.props.routes.map((x) => x.name)
     if (name !== null) {
       if (name.substr(0, 1) === '.') {
@@ -48,19 +48,19 @@ class Component extends BaseComponent {
       }
       node = null
     })
-
-    return rv.join('/').replace(/:[a-zA-Z]+/g, (m) => {
+    let result = rv.join('/').replace(/:[a-zA-Z]+/g, (m) => {
       const key = m.substr(1)
       return params[key] || this.props.params[key]
     })
+    return result
   }
 
   /* helper to transition to a specific page */
-  transitionToAdminPage (name, params) {
+  transitionToAdminPage(name, params) {
     this.props.history.pushState(null, this.getPathToAdminPage(name, params))
   }
 
-  componentDidMount () {
+  componentDidMount() {
     super.componentDidMount()
     if (this.props.history !== undefined) {
       this._unlistenBeforeLeavingRoute = this.props.history.listenBeforeLeavingRoute(
@@ -68,14 +68,14 @@ class Component extends BaseComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     super.componentWillUnmount()
     if (this._unlistenBeforeLeavingRoute) {
       this._unlistenBeforeLeavingRoute()
     }
   }
 
-  routerWillLeave (nextLocation) {
+  routerWillLeave(nextLocation) {
     if (dialogSystem.preventNavigation()) {
       return false
     } else {
