@@ -3,7 +3,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 // import { Link } from 'react-router'
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Component from "./Component";
 
 class LektorLink extends Component {
@@ -13,7 +13,10 @@ class LektorLink extends Component {
       path = $LEKTOR_CONFIG.admin_root + "/" + path;
     }
     return (
-      <Link to={path} activeClassName="active">
+      <Link
+        to={path}
+        className={this.props.location.pathname === path ? "active" : ""}
+      >
         {this.props.children}
       </Link>
     );
@@ -24,4 +27,4 @@ LektorLink.propTypes = {
   to: PropTypes.string
 };
 
-module.exports = LektorLink;
+module.exports = withRouter(LektorLink);

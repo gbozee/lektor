@@ -23,6 +23,7 @@ class Component extends BaseComponent {
   /* helper that can generate a path to a rule */
   getPathToAdminPage(name, params) {
     let parts = this.props.routes.map(x => x.name);
+    parts = ["app", ...parts];
     if (name !== null) {
       if (name.substr(0, 1) === ".") {
         parts[parts.length - 1] = name.substr(1);
@@ -32,7 +33,6 @@ class Component extends BaseComponent {
     }
     const rv = [];
     let node = this.props.routes[0];
-    debugger;
     if (node.name !== parts.shift()) {
       return null;
     }
@@ -48,12 +48,10 @@ class Component extends BaseComponent {
       }
       node = null;
     });
-    debugger;
     let result = rv.join("/").replace(/:[a-zA-Z]+/g, m => {
       const key = m.substr(1);
       return params[key] || this.props.params[key];
     });
-    debugger
     return result;
   }
 
