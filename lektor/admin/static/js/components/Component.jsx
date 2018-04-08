@@ -32,6 +32,7 @@ class Component extends BaseComponent {
     }
     const rv = [];
     let node = this.props.routes[0];
+    debugger;
     if (node.name !== parts.shift()) {
       return null;
     }
@@ -47,10 +48,12 @@ class Component extends BaseComponent {
       }
       node = null;
     });
+    debugger;
     let result = rv.join("/").replace(/:[a-zA-Z]+/g, m => {
       const key = m.substr(1);
       return params[key] || this.props.params[key];
     });
+    debugger
     return result;
   }
 

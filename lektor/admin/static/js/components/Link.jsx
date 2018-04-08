@@ -8,7 +8,6 @@ import Component from "./Component";
 
 class LektorLink extends Component {
   render() {
-    debugger;
     let path = this.props.to;
     if (path.substr(0, 1) !== "/") {
       path = $LEKTOR_CONFIG.admin_root + "/" + path;

@@ -114,7 +114,6 @@ class BreadCrumbs extends RecordComponent {
     let crumbs = []
     const target = this.isRecordPreviewActive() ? '.preview' : '.edit'
     let lastItem = null
-
     if (this.state.recordPathInfo != null) {
       crumbs = this.state.recordPathInfo.segments.map((item) => {
         const urlPath = this.getUrlRecordPathWithAlt(item.path)
