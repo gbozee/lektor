@@ -10,6 +10,7 @@ class Component extends BaseComponent {
 
   /* helper function for forwarding props down the tree */
   getRoutingProps() {
+    console.log(this.props)
     return {
       history: this.props.history,
       location: this.props.location,
