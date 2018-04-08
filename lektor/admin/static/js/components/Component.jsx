@@ -22,8 +22,7 @@ class Component extends BaseComponent {
 
   /* helper that can generate a path to a rule */
   getPathToAdminPage(name, params) {
-    // let parts = this.props.routes.map((x) => x.name)
-    let parts = []
+    let parts = this.props.routes.map((x) => x.name)
     if (name !== null) {
       if (name.substr(0, 1) === '.') {
         if(parts.length === 0){
@@ -35,14 +34,13 @@ class Component extends BaseComponent {
         parts = name.split('.')
       }
     }
-    debugger;
 
-    const rv = ['admin','root']
-    // let node = this.props.routes[0]
-    // if (node.name !== parts.shift()) {
-    //   return null
-    // }
-    // rv.push(node.path)
+    const rv = []
+    let node = this.props.routes[0]
+    if (node.name !== parts.shift()) {
+      return null
+    }
+    rv.push(node.path)
 
     parts.forEach((part) => {
       for (let i = 0; i < node.childRoutes.length; i++) {
