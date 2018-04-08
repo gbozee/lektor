@@ -18,14 +18,13 @@ class RecordComponent extends Component {
 
   /* this returns the current record path segments as array */
   getRecordPathSegments() {
-    debugger;
+    console.log(this.props.location);
     const path = this.props.params.path;
     return path ? utils.urlPathToSegments(path) : [];
   }
 
   _getRecordPathAndAlt() {
-    debugger;
-    const path = this.props.params.path;
+    const path = (this.props.params || {}).path;
     if (!path) {
       return [null, null];
     }

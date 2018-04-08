@@ -2,6 +2,13 @@
 import dialogSystem from "../dialogSystem";
 import BaseComponent from "./BaseComponent";
 
+function getPath(pathname) {
+  let found = pathname.split("/").filter(x => x.startsWith("root"));
+  if (found.length > 0) {
+    return { path: found[0] };
+  }
+  return { path: "root" };
+}
 class Component extends BaseComponent {
   constructor(props) {
     super(props);
@@ -13,10 +20,14 @@ class Component extends BaseComponent {
     return {
       history: this.props.history,
       location: this.props.location,
-      params: this.props.match.params,
+      params: {
+        ...getPath(this.props.location.pathname),
+        ...this.props.match.params
+      },
       route: this.props.route,
       routeParams: this.props.match.params,
-      routes: this.props.routes
+      routes: this.props.routes,
+      match: this.props.match
     };
   }
 
