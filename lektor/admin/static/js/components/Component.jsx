@@ -36,13 +36,13 @@ class Component extends BaseComponent {
     if (node.name !== parts.shift()) {
       return null;
     }
-    rv.push(node.path);
+    rv.push(node.relativePath);
 
     parts.forEach(part => {
       for (let i = 0; i < node.childRoutes.length; i++) {
         if (node.childRoutes[i].name === part) {
           node = node.childRoutes[i];
-          rv.push(node.path);
+          rv.push(node.relativePath);
           return;
         }
       }
@@ -57,13 +57,14 @@ class Component extends BaseComponent {
 
   /* helper to transition to a specific page */
   transitionToAdminPage(name, params) {
-    this.props.history.pushState(null, this.getPathToAdminPage(name, params));
+    this.props.history.push(this.getPathToAdminPage(name, params));
+    // this.props.history.pushState(null, this.getPathToAdminPage(name, params));
   }
 
   componentDidMount() {
     super.componentDidMount();
     if (this.props.history !== undefined) {
-      this._unlistenBeforeLeavingRoute = this.props.history.listenBeforeLeavingRoute(
+      this._unlistenBeforeLeavingRoute = this.props.history.listen(
         this.props.route,
         this.routerWillLeave.bind(this)
       );

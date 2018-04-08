@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 // import { Router, Route, IndexRoute } from 'react-router'
+import { Router } from "react-router";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Component from "./components/Component";
 import i18n from "./i18n";
 import { useBeforeUnload } from "history";
-import createBrowserHistory from "history/lib/createBrowserHistory";
+import createBrowserHistory from "history/createBrowserHistory";
 
 /* eslint-disable no-unused-vars */
 import Bootstrap from "bootstrap";
@@ -61,29 +62,32 @@ const routes = (() => {
     childRoutes: routes
   };
   return (
-    <Route
-      name="app"
-      path={$LEKTOR_CONFIG.admin_root}
-      render={props => {
-        return (
-          <App {...props} routes={[baseRoute]} route={baseRoute}>
-            <Switch>
-              {routes.map(route => (
-                <Route
-                  key={route.name}
-                  name={route.name}
-                  path={route.path}
-                  routes={[baseRoute, route]}
-                  component={route.component}
-                />
-              ))}
-              <Route path="" component={Dash} />
-              <route path="*" component={BadRoute} />
-            </Switch>
-          </App>
-        );
-      }}
-    />
+    <Switch>
+      <Route
+        name="app"
+        path={$LEKTOR_CONFIG.admin_root}
+        render={props => {
+          return (
+            <App {...props} routes={[baseRoute]} route={baseRoute}>
+              {/* <Switch> */}
+                {routes.map(route => (
+                  <Route
+                    key={route.name}
+                    name={route.name}
+                    relativePath={route.path}
+                    path={$LEKTOR_CONFIG.admin_root + '/' + route.path}
+                    routes={[baseRoute, route]}
+                    component={route.component}
+                  />
+                ))}
+              {/* </Switch> */}
+            </App>
+          );
+        }}
+      />
+      <Route path="" component={Dash} />
+      <route path="*" component={BadRoute} />
+    </Switch>
   );
 })();
 
@@ -92,12 +96,13 @@ const dash = document.getElementById("dash");
 if (dash) {
   ReactDOM.render(
     <BrowserRouter>
+      {/* <Router history={createBrowserHistory}> */}
       {/* <Router history={useBeforeUnload(createBrowserHistory)()}> */}
       <Switch>
         {routes}
         <Route path="*" component={BadRoute} />
       </Switch>
-      {/* </Router> */}
+      {/* </Router>, */}
     </BrowserRouter>,
     dash
   );
