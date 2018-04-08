@@ -55,19 +55,25 @@ const routes = (() => {
     { name: "add-child", path: ":path/add-child", component: AddChildPage },
     { name: "upload", path: ":path/upload", component: AddAttachmentPage }
   ];
+  let baseRoute = {
+    name: "app",
+    path: $LEKTOR_CONFIG.admin_root,
+    childRoutes: routes
+  };
   return (
     <Route
       name="app"
       path={$LEKTOR_CONFIG.admin_root}
       render={props => {
         return (
-          <App {...props} route={{ childRoutes: routes }}>
+          <App {...props} routes={[baseRoute]} route={baseRoute}>
             <Switch>
               {routes.map(route => (
                 <Route
                   key={route.name}
                   name={route.name}
                   path={route.path}
+                  routes={[baseRoute, route]}
                   component={route.component}
                 />
               ))}
