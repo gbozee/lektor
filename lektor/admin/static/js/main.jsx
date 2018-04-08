@@ -3,10 +3,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Router, Route, IndexRoute} from 'react-router'
+// import { Router, Route, IndexRoute } from 'react-router'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Component from './components/Component'
 import i18n from './i18n'
-import {useBeforeUnload} from 'history'
+import { useBeforeUnload } from 'history'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 /* eslint-disable no-unused-vars */
@@ -31,7 +32,7 @@ import AddAttachmentPage from './views/AddAttachmentPage'
 i18n.currentLanguage = $LEKTOR_CONFIG.lang
 
 class BadRoute extends Component {
-  render () {
+  render() {
     return (
       <div>
         <h2>Nothing to see here</h2>
@@ -48,24 +49,36 @@ BadRoute.contextTypes = {
 const routes = (() => {
   // route setup
   return (
-    <Route name='app' path={$LEKTOR_CONFIG.admin_root} component={App}>
-      <Route name='edit' path=':path/edit' component={EditPage} />
-      <Route name='delete' path=':path/delete' component={DeletePage} />
-      <Route name='preview' path=':path/preview' component={PreviewPage} />
-      <Route name='add-child' path=':path/add-child' component={AddChildPage} />
-      <Route name='upload' path=':path/upload' component={AddAttachmentPage} />
-      <IndexRoute component={Dash} />
-      <route path='*' component={BadRoute} />
-    </Route>
+    <Route name='app' path={$LEKTOR_CONFIG.admin_root} render={(props) => {
+      return <App {...props}>
+        <Switch>
+          <Route name='edit' path=':path/edit' component={EditPage} />
+          <Route name='delete' path=':path/delete' component={DeletePage} />
+          <Route name='preview' path=':path/preview' component={PreviewPage} />
+          <Route name='add-child' path=':path/add-child' component={AddChildPage} />
+          <Route name='upload' path=':path/upload' component={AddAttachmentPage} />
+          <Route path="" component={Dash} />
+          <route path='*' component={BadRoute} />
+        </Switch>
+      </App>
+    }} />
   )
 })()
+
+
 
 const dash = document.getElementById('dash')
 
 if (dash) {
   ReactDOM.render((
-    <Router history={useBeforeUnload(createBrowserHistory)()}>
-      {routes}
-    </Router>
+    <BrowserRouter>
+      {/* <Router history={useBeforeUnload(createBrowserHistory)()}> */}
+      <Switch>
+        {routes}
+        <Route path="*" component={BadRoute} />
+
+      </Switch>
+      {/* </Router> */}
+    </BrowserRouter>
   ), dash)
 }

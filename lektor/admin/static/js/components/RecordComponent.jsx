@@ -7,21 +7,23 @@ import utils from '../utils'
    the record it works with. */
 class RecordComponent extends Component {
   /* checks if the record preview is active. */
-  isRecordPreviewActive () {
-    const routes = this.props.routes
-    return (
-      routes.length > 0 &&
-      routes[routes.length - 1].component.name === 'PreviewPage'
-    )
+  isRecordPreviewActive() {
+    // const routes = this.props.routes
+    return this.props.location.pathname === '/admin/root/preview'
+    // debugger;
+    // return (
+    //   routes.length > 0 &&
+    //   routes[routes.length - 1].component.name === 'PreviewPage'
+    // )
   }
 
   /* this returns the current record path segments as array */
-  getRecordPathSegments () {
+  getRecordPathSegments() {
     const path = this.props.params.path
     return path ? utils.urlPathToSegments(path) : []
   }
 
-  _getRecordPathAndAlt () {
+  _getRecordPathAndAlt() {
     const path = this.props.params.path
     if (!path) {
       return [null, null]
@@ -32,20 +34,20 @@ class RecordComponent extends Component {
 
   /* this returns the path of the current record.  If the current page does
    * not have a path component then null is returned. */
-  getRecordPath () {
+  getRecordPath() {
     const [path] = this._getRecordPathAndAlt()
     return path
   }
 
   /* returns the current alt */
-  getRecordAlt () {
+  getRecordAlt() {
     const [, alt] = this._getRecordPathAndAlt()
     return !alt ? '_primary' : alt
   }
 
   /* return the url path for the current record path (or a modified one)
      by preserving or overriding the alt */
-  getUrlRecordPathWithAlt (newPath, newAlt) {
+  getUrlRecordPathWithAlt(newPath, newAlt) {
     if (newPath === undefined || newPath === null) {
       newPath = this.getRecordPath()
     }
@@ -60,17 +62,17 @@ class RecordComponent extends Component {
   }
 
   /* returns the parent path if available */
-  getParentRecordPath () {
+  getParentRecordPath() {
     return utils.getParentFsPath(this.getRecordPath())
   }
 
   /* returns true if this is the root record */
-  isRootRecord () {
+  isRootRecord() {
     return this.getRecordPath() === ''
   }
 
   /* returns the breadcrumbs for the current record path */
-  getRecordCrumbs () {
+  getRecordCrumbs() {
     const segments = this.getRecordPathSegments()
     if (segments === null) {
       return []
